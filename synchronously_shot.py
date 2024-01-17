@@ -5,7 +5,7 @@ import cv2
 from tqdm import tqdm
 
 import picshow
-import camera_funcs as camera
+import camera as camera
 
 # 打开数据库中的图片并进行显示
 from picshow import get_pic_names

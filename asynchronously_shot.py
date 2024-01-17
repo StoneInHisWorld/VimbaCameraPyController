@@ -5,7 +5,7 @@ import time
 import cv2
 from tqdm import tqdm
 
-import camera_funcs as camera
+import camera as camera
 import picshow
 
 # 打开数据库中的图片并进行显示
