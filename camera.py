@@ -11,7 +11,7 @@ class Camera:
         with Vimba.get_instance() as vimba:
             cams = vimba.get_all_cameras()
             assert len(cams) >= 1, 'No camera detected!'
-            self.__device = cams[0]
+            self.__device = cams[no]
 
     def set_expostime(self, expostime):
         """
