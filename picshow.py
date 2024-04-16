@@ -14,11 +14,6 @@ matplotlib.use('TkAgg')
 def get_screen_size():
     screen_width, screen_height = pyautogui.size()
     return screen_height, screen_width
-    # mgr = plt.get_current_fig_manager()
-    # mgr.full_screen_toggle()
-    # height = mgr.canvas.height()
-    # width = mgr.canvas.width()
-    # return height, width
 
 
 def find_open_pic(path):
@@ -27,8 +22,6 @@ def find_open_pic(path):
 
 
 def prepare_plt(pos=(0, 0), screen_size=None, win_size=None):
-    # plt.rcParams['figure.figsize'] = (0.28, 0.28)
-    # plt.figure(dpi=150)
     # 设置窗口位置
     manager = plt.get_current_fig_manager()
     if screen_size is not None:
@@ -49,13 +42,6 @@ def show_pic(path, sleep=1):
     plt.ioff()
 
 
-# def close_pic():
-#     plt.clf()
-#     # plt.close()
-#     # 退出动作
-#     plt.ioff()
-
-
 if __name__ == '__main__':
     img_dir = './data/MNIST'
     path_iter = os.walk(img_dir)
@@ -72,7 +58,6 @@ if __name__ == '__main__':
         for fn in pbar:
             pbar.set_description(f'打开{fn}')
             path = os.path.join(img_dir, fn)
-            # show_pic(path, sleep=0.5, screen_size=screen_size, win_size=(200, 200))
             show_pic(path, sleep=0.5)
             cv2.destroyAllWindows()
 

@@ -12,7 +12,6 @@ from picshow import get_pic_names
 
 dataset_dir = './data/MNIST'
 fruit_dir = './fruits/{}'.format(time.strftime('%Y-%m-%d-%H.%M', time.localtime()))
-# figsize = (0.3, 0.3)
 exposure_time = 70
 gain = 1
 
@@ -30,16 +29,15 @@ with tqdm(file_names, desc='打开图片...', unit='img', position=0, leave=True
     for fn in pbar:
         # 显示
         pbar.set_description(f'处理{fn}')
-        # pbar.set_description(f'打开{fn}')
         path = os.path.join(dataset_dir, fn)
         picshow.show_pic(path, sleep=0.1)
 
         # 拍照
-        # pbar.set_description(f'拍下{fn}')
+        pbar.set_description(f'拍下{fn}')
         frame = camera.shoot(exposure_time=exposure_time, gain=gain)
 
         # 存图
         if not os.path.exists(fruit_dir):
             os.mkdir(fruit_dir)
-        # pbar.set_description(f'保存{fn}')
+        pbar.set_description(f'保存{fn}')
         cv2.imwrite(os.path.join(fruit_dir, fn), frame.as_opencv_image())

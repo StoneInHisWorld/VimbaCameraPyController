@@ -13,7 +13,6 @@ from VimbaPython.Source.vimba import PixelFormat
 
 dataset_dir = './data/MNIST'
 fruit_dir = './fruits/{}'.format(time.strftime('%Y-%m-%d-%H.%M', time.localtime()))
-# figsize = (0.3, 0.3)
 exposure_time = 70
 gain = 1
 px_format = PixelFormat.Mono8
@@ -39,14 +38,6 @@ def picshowting_thread(change_signal):
 
             # 通知拍照
             change_signal.set()
-            # # pbar.set_description(f'拍下{fn}')
-            # frame = camera.shoot(exposure_time=exposure_time, gain=gain)
-
-            # # 存图
-            # if not os.path.exists(fruit_dir):
-            #     os.mkdir(fruit_dir)
-            # # pbar.set_description(f'保存{fn}')
-            # cv2.imwrite(os.path.join(fruit_dir, fn), frame.as_opencv_image())
     end_signal.set()
 
 
@@ -58,13 +49,6 @@ def frame_handler(cam, frame, pic_name):
         cv2.imwrite(os.path.join(fruit_dir, pic_name), frame.as_opencv_image())
         change.clear()
     cam.queue_frame(frame)
-
-# def get_pic_names(dataset_dir):
-#     path_iter = os.walk(dataset_dir)
-#     _, __, file_names = next(path_iter)
-#     return sorted(
-#         file_names, key=lambda name: int(name.split(".")[0])
-#     )  # 给文件名排序！
 
 
 if __name__ == '__main__':
