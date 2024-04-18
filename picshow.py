@@ -1,9 +1,11 @@
 import os
 import time
 
+import PIL
 import cv2
 import pyautogui
-import PIL.Image
+import PIL.Image as IMAGE
+from PIL.Image import Image
 import matplotlib
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -16,25 +18,50 @@ def get_screen_size():
     return screen_height, screen_width
 
 
-def find_open_pic(path):
-    img = PIL.Image.open(path)
+def find_open_pic(path_or_img, img_transformer):
+    if isinstance(path_or_img, str):
+        img = PIL.Image.open(path_or_img)
+    elif isinstance(path_or_img, Image):
+        img = path_or_img
+    else:
+        raise NotImplementedError(f"不明值{path_or_img}")
+    img = img_transformer(img)
     plt.imshow(img, cmap='gray', aspect='equal')
 
 
-def prepare_plt(pos=(0, 0), screen_size=None, win_size=None):
+def binarize_img(img: Image, threshold: int = 127) -> Image:
+    """
+    将图片根据阈值进行二值化
+    参考自：https://www.jianshu.com/p/f6d40a73310f
+    :param img: 待转换图片
+    :param threshold: 二值图阈值
+    :return: 转换好的图片
+    """
+    table = []
+    for i in range(256):
+        if i < threshold:
+            table.append(0)
+        else:
+            table.append(1)
+    # 图片二值化
+    return img.point(table, '1')
+
+
+def prepare_plt(pos=(0, 0), screen_size=None, win_size=None, **fig_kwargs):
     # 设置窗口位置
     manager = plt.get_current_fig_manager()
     if screen_size is not None:
         pos = (screen_size[1]//2 - win_size[1]//2, screen_size[0]//2 - win_size[0]//2)
     manager.window.wm_geometry(f"+{pos[0]}+{pos[1]}")
+    plt.figure(**fig_kwargs)
 
 
-def show_pic(path, sleep=1):
+def show_pic(path, sleep=1, img_transformer=lambda i: i):
     # 设置互动模式以及窗口内属性
     plt.ion()
     plt.axis('off')
     # 打开图片
-    find_open_pic(path)
+    find_open_pic(path, img_transformer)
     time.sleep(sleep)
     plt.pause(sleep)
     plt.clf()
