@@ -48,10 +48,12 @@ def frame_handler(cam, frame):
 
 
 if __name__ == '__main__':
+    # 设置线程通信信号
     change = threading.Event()
     end_signal = threading.Event()
     pending_pics = queue.Queue()
 
+    # 获取相机对象
     camera = Camera(0, expos_time=exposTime, gain=gain)
 
     # 获取屏幕尺寸并设置好plt属性
