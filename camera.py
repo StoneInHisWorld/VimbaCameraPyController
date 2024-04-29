@@ -2,12 +2,13 @@ import time
 from VimbaPython.Source.vimba import *
 
 
-class Camera:
+class VimbaCamera:
 
     def __init__(self, no, expos_time=50, gain=0):
-        """
-        初始化Vimba相机
+        """Vimba相机对象，初始化时会检查相机是否已经进行连接。
         :param no: 取当前连接的第no号相机
+        :param expos_time: 相机的曝光时间
+        :param gain: 相机的增益值
         """
         self.__no = no
         self.__exposTime = expos_time
@@ -21,16 +22,14 @@ class Camera:
                 raise ConnectionError(f'{no}号相机未连接！')
 
     def set_exposTime(self, exposTime):
-        """
-        设置相机曝光时间
+        """设置相机曝光时间
         :param exposTime: 曝光时间
         :return: None
         """
         self.__exposTime = exposTime
 
     def set_gain(self, gain):
-        """
-        设置相机增益。
+        """设置相机增益。
         :param gain: 增益
         :return: None
         """
@@ -54,8 +53,9 @@ class Camera:
                     yield frame
 
     def AS_shoot(self, start_signal, end_signal, frame_handler):
-        """
-        异步拍摄，适用于多线程程序。请将此方法作为线程的target参数值。
+        """异步拍摄，适用于多线程程序。
+        请将此方法作为线程的target参数值。
+        :param start_signal: 开始信号。用于给相机预留出足够的初始化时间，会在相机开始帧接收后检查start_signal的值。
         :param end_signal: 结束信号，通知相机结束拍摄。
         :param frame_handler: 单帧处理方法，使用该方法处理相机获取的每一帧。接口必须为def handler(cam, frame)->None
         :return: None
@@ -76,40 +76,3 @@ class Camera:
         cam_gain = cam.Gain
         cam_expostime.set(self.__exposTime)
         cam_gain.set(self.__gain)
-
-    def close(self):
-        self.__close = True
-
-
-# Synchronous grab
-# def shoot(exposure_time=50, gain=0, px_format=PixelFormat.Mono8):
-#     with Vimba.get_instance() as vimba:
-#         cams = vimba.get_all_cameras()
-#         assert len(cams) >= 1, 'No camera detected!'
-#         with cams[0] as cam:
-#             cam_expostime = cam.ExposureTimeAbs
-#             cam_gain = cam.Gain
-#             cam_expostime.set(exposure_time)
-#             cam_gain.set(gain)
-#
-#             # Aquire single frame synchronously
-#             frame = cam.get_frame()
-#             frame.convert_pixel_format(px_format)
-#             # print(frame.as_numpy_ndarray())
-#             return frame
-
-
-# # Asynchronous grab
-# def shootting_thread(end_signal, frame_handler, exposure_time=50, gain=0):
-#     with Vimba.get_instance() as vimba:
-#         cams = vimba.get_all_cameras()
-#         with cams[0] as cam:
-#             # set camera
-#             cam_exposuretime = cam.ExposureTimeAbs
-#             cam_gain = cam.Gain
-#             cam_exposuretime.set(exposure_time)
-#             cam_gain.set(gain)
-#
-#             cam.start_streaming(frame_handler)
-#             end_signal.wait()
-#             cam.stop_streaming()
