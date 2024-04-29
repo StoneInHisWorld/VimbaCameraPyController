@@ -1,3 +1,4 @@
+import time
 from VimbaPython.Source.vimba import *
 
 
@@ -52,7 +53,7 @@ class Camera:
                     frame.convert_pixel_format(px_format)
                     yield frame
 
-    def AS_shoot(self, end_signal, frame_handler):
+    def AS_shoot(self, start_signal, end_signal, frame_handler):
         """
         异步拍摄，适用于多线程程序。请将此方法作为线程的target参数值。
         :param end_signal: 结束信号，通知相机结束拍摄。
@@ -65,7 +66,9 @@ class Camera:
                 self.__update_param(cam)
                 # TODO：frame_handler需要屏蔽vimba接口相关
                 cam.start_streaming(frame_handler)
+                start_signal.wait()
                 end_signal.wait()
+                time.sleep(1)
                 cam.stop_streaming()
 
     def __update_param(self, cam):
