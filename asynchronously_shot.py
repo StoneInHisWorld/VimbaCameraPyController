@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 import picshow
 from VimbaPython.Source.vimba import PixelFormat
-from camera import Camera
+from camera import VimbaCamera
 
 # TODO:设置数据读取目录以及产出目录
 dataset_root = './data/'
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     pending_pics = queue.Queue()
 
     # 获取相机对象
-    camera = Camera(0, expos_time=exposTime, gain=gain)
+    camera = VimbaCamera(0, expos_time=exposTime, gain=gain)
 
     # 获取屏幕尺寸并设置好plt属性
     screen_size = picshow.get_screen_size()
