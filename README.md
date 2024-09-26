@@ -1,5 +1,5 @@
 # VIMBA CAMERA Controller v1.0
-对于支持vimba接口的相机控制器
+对于支持vimba接口的相机控制器进行基本功能的封装
 
 ## 使用之前
 需要在[Allied Vision™官方网站](https://www.alliedvision.cn/cn/products/software/vimba-sdk/)中下载SDK，放在与本文件的同级目录
@@ -7,7 +7,8 @@
 ## VimbaCamera
 Vimba相机对象，封装了相机（vimba接口）提供的基础功能。
 可以通过set方法设置相机的参数，将会在获取下一帧之前（处理下一帧之前）更新相机参数。  
-使用范例：
+
+## 使用范例
 ```python
 from vbcamera import VimbaCamera as Camera
 import cv2
